@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EpinelPSLauncher.Views.AddGame">
+	<Grid>
+		<StackPanel x:Name="Page1" IsVisible="True">
+			<RadioButton x:Name="selectDownload" Content="Select existing installation" IsChecked="True" IsCheckedChanged="RadioButton_IsCheckedChanged" />
+			<RadioButton x:Name="radioDownload" Content="Download" IsCheckedChanged="RadioButton_IsCheckedChanged"/>
+
+			<WrapPanel Orientation="Horizontal" Margin="0,15,0,0">
+				<TextBlock VerticalAlignment="Center" Margin="0,0,5,0">Path: </TextBlock>
+				<TextBox x:Name="TextPath" Width="300" Margin="0,0,5,0" Text="C:\NIKKE" TextChanged="TextBox_TextChanged"></TextBox>
+				<Button Click="Button_Click">...</Button>
+			</WrapPanel>
+
+			<TextBlock x:Name="Error" Foreground="Red"></TextBlock>
+		</StackPanel>
+
+		<StackPanel x:Name="InstallPage" IsVisible="False">
+			<ProgressBar x:Name="InstallProgress" Height="18"></ProgressBar>
+			<TextBlock x:Name="Error2" Foreground="Red"></TextBlock>
+		</StackPanel>
+	</Grid>
+</UserControl>

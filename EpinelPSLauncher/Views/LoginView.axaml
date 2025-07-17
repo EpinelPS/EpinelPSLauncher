@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="using:EpinelPSLauncher.Models"
+			 xmlns:ui="using:FluentAvalonia.UI.Controls"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EpinelPSLauncher.Views.LoginView"
+			 Loaded="UserControl_Loaded">
+	<Grid>
+		<!--
+		<Grid.Background>
+			<ImageBrush Source="avares://EpinelPSLauncher/Assets/bg.jpg" Stretch="Fill"></ImageBrush>
+		</Grid.Background>-->
+		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadingUI" IsVisible="False">
+			<ui:ProgressRing Height="48" Width="48"></ui:ProgressRing>
+			<TextBlock x:Name="LoadingText">Please wait...</TextBlock>
+		</StackPanel>
+		<Border x:Name="LoginSubpage" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" Padding="30" CornerRadius="10">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"></RowDefinition>
+					<RowDefinition Height="auto"></RowDefinition>
+					<RowDefinition Height="auto"></RowDefinition>
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+
+				<TextBlock x:Name="SelAcct" FontSize="24" Grid.Row="0" Grid.Column="0">Select an account</TextBlock>
+				<ListBox x:Name="AccountList" Grid.Row="1"  Grid.Column="0"  PointerPressed="ListBox_PointerPressed" Tapped="ListBox_Tapped">
+					<ListBox.ItemTemplate>
+						<DataTemplate DataType="{x:Type models:AccountEntry}">
+							<WrapPanel Orientation="Vertical">
+								<TextBlock Text="{Binding Email}"></TextBlock>
+								<TextBlock Text="{Binding FormattedName}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"></TextBlock>
+
+								<WrapPanel.ContextMenu>
+									<ContextMenu>
+										<ContextMenu.Items>
+											<MenuItem Header="Remove">
+												<MenuItem.Icon>
+													<ui:SymbolIcon Symbol="Remove"/>
+												</MenuItem.Icon>
+											</MenuItem>
+										</ContextMenu.Items>
+									</ContextMenu>
+								</WrapPanel.ContextMenu>
+							</WrapPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+
+				<Button Grid.Row="2" Grid.Column="0" BorderThickness="1" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,15,0,0" Click="AddAccount_Click">
+					<WrapPanel Orientation="Horizontal">
+						<ui:SymbolIcon Symbol="Add" Margin="0,0,10,0"></ui:SymbolIcon>
+						<TextBlock Text="Add new account"></TextBlock>
+					</WrapPanel>
+				</Button>
+			</Grid>
+		</Border>
+	</Grid>
+
+</UserControl>
