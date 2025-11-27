@@ -44,21 +44,13 @@ public:
 		data6 = 0;
 	}
 	virtual ~GameString() {
-		printf("called ~GameString\n");
-		delete theString;
-		printf("~GameString end\n");
+		// shouldnt be called
 	}
-	virtual void NotDelete() {
-		printf("called NotDelete\n");
-		delete theString;
-		theString = NULL;
-		printf("NotDelete\n");
+	virtual void vtable01() {
+		// shouldnt be called
 	}
-	virtual void Delete() {
-		printf("called ~GameString\n");
-		delete theString;
-		theString = NULL;
-		printf("~GameString end\n");
+	virtual void vtable02() {
+		// shouldnt be called
 	}
 
 
@@ -73,15 +65,13 @@ public:
 class CPlayer
 {
 	// TODO figure out how to remove unused functions
-	virtual void spacer()
+	virtual void vtable00()
 	{
-		printf("SPACER\n");
+		printf("shouldnt be called: CPlayer::vtable00\n");
 	}
 
 	virtual int GetLoginData(GameString* str)
 	{
-		printf("GetLoginData\n");
-
 		if (loginData)
 		{
 			void* newMem = HeapReAlloc(GetProcessHeap(), 0, (str)->theString, strlen(loginData) + 1);
@@ -107,7 +97,6 @@ class CPlayer
 	virtual int GetComplianceRegion(GameString* str)
 	{
 		const char* language = "English";
-		printf("GetComplianceRegion\n");
 		void* newMem = HeapReAlloc(GetProcessHeap(), 0, (str)->theString, strlen(language) + 1);
 		if (newMem)
 		{
@@ -127,15 +116,14 @@ class CGame
 		printf("called ~CGame\n");
 	}
 
-	virtual int V1()
+	virtual int vtable01()
 	{
-		printf("UNKNOWN1 end\n");
+		printf("vtable01 end\n");
 		return 0;
 	}
 
 	virtual int GetPlatformLanguageCode(int type, GameString* str)
 	{
-		printf("GetPlatformLanguageCode\n");
 		const char* language = "English"; // TODO: Dont hardcode this
 		void* newMem = HeapReAlloc(GetProcessHeap(), 0, (str)->theString, strlen(language) + 1);
 
@@ -149,15 +137,13 @@ class CGame
 			printf("memory allocation failure!!!");
 		}
 
-		printf("GetPlatformLanguageCode end\n");
 		return 0;
 	}
 	virtual int SetGameLanguageCode(int type, GameString* str)
 	{
-		printf("SetGameLanguageCode\n");
 		return 0;
 	}
-	virtual int v3()
+	virtual int vtable03()
 	{
 		printf("3 end\n");
 		return 0;
@@ -191,7 +177,6 @@ class CGame
 	}
 
 	virtual int GetGameResourcePath(GameString* str) {
-		printf("called GetGameResourcePath\n");
 		void* newMem = HeapReAlloc(GetProcessHeap(), 0, (str)->theString, strlen(resourcePath) + 1);
 		if (newMem)
 		{
@@ -229,17 +214,17 @@ class CLauncherPipe {
 public:
 	int Connect()
 	{
-		const DWORD bufferSize = 4096; // 4KB buffer for each read operation
+		const DWORD bufferSize = 4096;
 
-		// Open the named pipe
+		// communicate to the .NET launcher helper using a named pipe
 		hPipe = CreateFile(
-			L"\\\\.\\pipe\\goodpipe",  // Pipe name
-			GENERIC_READ,             // Read access
-			0,                        // No sharing
-			NULL,                     // Default security attributes
-			OPEN_EXISTING,            // Opens existing pipe
-			0,                        // Default attributes
-			NULL                      // No template file
+			L"\\\\.\\pipe\\goodpipe",
+			GENERIC_READ,
+			0,
+			NULL,
+			OPEN_EXISTING,
+			0,
+			NULL
 		);
 
 		if (hPipe == INVALID_HANDLE_VALUE) {
