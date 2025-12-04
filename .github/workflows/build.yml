@@ -21,10 +21,6 @@ jobs:
       uses: actions/checkout@v6
       with:
         fetch-depth: 0
-    - name: MSVC Setup
-      uses: TheMrMilchmann/setup-msvc-dev@v4
-      with:
-        arch: x64
 
     # Install the .NET Core workload
     - name: Install .NET
@@ -45,11 +41,11 @@ jobs:
     - name: Publish Launcher
       run: dotnet publish EpinelPSLauncher.Desktop
 
-    - name: Build sail
+    - name: Build launcher DLL
       run: msbuild sail_api_impl64 /p:Configuration=Release /p:Platform=x64
 
     - name: Copy to output
-      run: echo ${{ github.workspace }} && md ${{ github.workspace }}/out/ && xcopy /s /e "${{ github.workspace }}\EpinelPSLauncher.Desktop\bin\Release\net10.0\win-x64\publish\" "${{ github.workspace }}\out\" && xcopy /s /e "${{ github.workspace }}\LauncherUtility\bin\Release\net10.0\win-x64\publish\" "${{ github.workspace }}\out\" && copy "${{ github.workspace }}\sail_api_impl64\x64\Release\sail_api_impl64.dll" "${{ github.workspace }}\out\sail_api_impl64.dll"
+      run: echo ${{ github.workspace }} && md ${{ github.workspace }}/out/ && xcopy /s /e "${{ github.workspace }}\EpinelPSLauncher.Desktop\bin\Release\net10.0\publish\" "${{ github.workspace }}\out\" && xcopy /s /e "${{ github.workspace }}\LauncherUtility\bin\Release\net10.0\win-x64\publish\" "${{ github.workspace }}\out\" && copy "${{ github.workspace }}\sail_api_impl64\x64\Release\sail_api_impl64.dll" "${{ github.workspace }}\out\sail_api_impl64.dll"
   
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
