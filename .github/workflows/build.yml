@@ -12,13 +12,10 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
+        runtime: [win-x64, linux-x64]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
-    strategy:
-      matrix:
-        runtime: [win-x64, linux-x64]
     
     steps:
     - name: Checkout
