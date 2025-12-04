@@ -1,0 +1,61 @@
+name: Build and publish server
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Release]
+        runtime: [win-x64, linux-x64]
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore packages
+      run: dotnet restore
+
+    - name: Publish Launcher Helper
+      run: dotnet publish LauncherUtility
+      
+    - name: Publish Launcher for ${{ matrix.runtime }}
+      run: dotnet publish EpinelPSLauncher.Desktop --runtime ${{ matrix.runtime }}
+
+    - name: Build launcher DLL
+      run: msbuild sail_api_impl64 /p:Configuration=Release /p:Platform=x64
+
+    - name: Create output directory
+      run: echo ${{ github.workspace }} && md ${{ github.workspace }}/out/
+
+    - name: Copy Launcher to output
+      run: xcopy /s /e "${{ github.workspace }}\EpinelPSLauncher.Desktop\bin\Release\net10.0\${{ matrix.runtime }}\publish\" "${{ github.workspace }}\out\"
+    
+    - name: Copy DLLs and Launcher Helper to output
+      run: xcopy /s /e "${{ github.workspace }}\LauncherUtility\bin\Release\net10.0\win-x64\publish\" "${{ github.workspace }}\out\" && copy "${{ github.workspace }}\sail_api_impl64\x64\Release\sail_api_impl64.dll" "${{ github.workspace }}\out\sail_api_impl64.dll"
+  
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Launcher_${{ matrix.runtime }}
+        path: ${{ github.workspace }}/out/
