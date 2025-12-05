@@ -45,12 +45,12 @@ public partial class MainWindow : Window
         SessionData.UserProfileResponse = null!;
         SessionData.UserProfileResponseAccount = null!;
 
-        MainView.Instance.Frame.Navigate(typeof(LoginView), new(), new DrillInNavigationTransitionInfo());
-        MainView.Instance.Frame.BackStack.Clear();
+        ShellView.Instance.Frame.Navigate(typeof(LoginView), new(), new DrillInNavigationTransitionInfo());
+        ShellView.Instance.Frame.BackStack.Clear();
     }
 
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
-        MainView.Instance.Frame.Navigate(typeof(SettingsView));
+        ShellView.Instance.Frame.Navigate(typeof(SettingsView));
     }
 }

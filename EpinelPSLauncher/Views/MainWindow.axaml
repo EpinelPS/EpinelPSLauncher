@@ -166,7 +166,7 @@
 			</Grid>
 
 			<!-- Main Content -->
-			<views:MainView Grid.Row="2"/>
+			<views:ShellView Grid.Row="2"/>
 		</Grid>
 	</Panel>
 </Window>

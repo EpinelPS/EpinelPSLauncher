@@ -1,8 +1,10 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
+/*
+	Helper DLL to inform the game about authentication information,
+	resource path, and locale using a named pipe which communicates with
+	LauncherUtilty.exe
+	File under GPL v3 license, created by MikhailProductions
+*/
 #include "pch.h"
-#include <stdio.h>
-#include <iostream>
-#include <vector>
 
 LPSTR loginData = NULL;
 LPSTR resourcePath = NULL;

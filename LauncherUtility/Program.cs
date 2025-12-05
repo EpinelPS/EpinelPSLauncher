@@ -1,6 +1,11 @@
-﻿using System.Diagnostics;
+﻿using LauncherUtility;
+using System.Diagnostics;
 using System.Text;
-using LauncherUtility;
+
+/* 
+ * Helper executable to start the game 
+ * TODO: add command line switch in EpinelPSLauncher to launch game without GUI
+*/
 
 // check if required dll is present
 if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "sail_api_impl64.dll")))

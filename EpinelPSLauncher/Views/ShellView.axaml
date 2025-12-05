@@ -4,6 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="EpinelPSLauncher.Views.MainView">
+             x:Class="EpinelPSLauncher.Views.ShellView">
 	<ui:Frame x:Name="Frame"/>
 </UserControl>

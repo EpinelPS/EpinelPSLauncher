@@ -153,8 +153,8 @@ public partial class LoginView : UserControl
             }.ShowAsync();
         }
 
-        MainView.Instance.Frame.Navigate(typeof(LoggedInView));
-        MainView.Instance.Frame.BackStack.Clear();
+        ShellView.Instance.Frame.Navigate(typeof(LoggedInView));
+        ShellView.Instance.Frame.BackStack.Clear();
 
         LoginSubpage.IsVisible = true;
         LoadingUI.IsVisible = false;

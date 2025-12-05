@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sail_api_impl64", "sail_api_impl64\sail_api_impl64.vcxproj", "{240D874D-A615-4459-8B11-001E96834CAE}"
 EndProject
@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherUtility", "Launcher
 	ProjectSection(ProjectDependencies) = postProject
 		{240D874D-A615-4459-8B11-001E96834CAE} = {240D874D-A615-4459-8B11-001E96834CAE}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelperDll", "HelperDll\HelperDll.vcxproj", "{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnityInit", "UnityInit\UnityInit.vcxproj", "{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +80,30 @@ Global
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}.Release|x64.Build.0 = Release|Any CPU
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}.Release|x86.ActiveCfg = Release|Any CPU
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}.Release|x86.Build.0 = Release|Any CPU
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Debug|Any CPU.Build.0 = Debug|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Debug|x64.ActiveCfg = Debug|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Debug|x64.Build.0 = Debug|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Debug|x86.ActiveCfg = Debug|Win32
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Debug|x86.Build.0 = Debug|Win32
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Release|Any CPU.ActiveCfg = Release|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Release|Any CPU.Build.0 = Release|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Release|x64.ActiveCfg = Release|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Release|x64.Build.0 = Release|x64
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Release|x86.ActiveCfg = Release|Win32
+		{3EEF559C-0BC5-4E9D-8F28-AB7074E9BEC7}.Release|x86.Build.0 = Release|Win32
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Debug|Any CPU.Build.0 = Debug|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Debug|x64.ActiveCfg = Debug|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Debug|x64.Build.0 = Debug|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Debug|x86.ActiveCfg = Debug|Win32
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Debug|x86.Build.0 = Debug|Win32
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Release|Any CPU.ActiveCfg = Release|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Release|Any CPU.Build.0 = Release|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Release|x64.ActiveCfg = Release|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Release|x64.Build.0 = Release|x64
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Release|x86.ActiveCfg = Release|Win32
+		{8CAB4DD6-2443-44A0-A3DA-E00D704EE61B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

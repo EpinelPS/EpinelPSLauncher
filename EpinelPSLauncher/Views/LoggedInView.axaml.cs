@@ -1,20 +1,16 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Timers;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using EpinelPSLauncher.Clients;
 using EpinelPSLauncher.Models;
 using EpinelPSLauncher.Utils;
 using FluentAvalonia.UI.Controls;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using System.Timers;
 
 namespace EpinelPSLauncher.Views;
 
@@ -182,7 +178,7 @@ public partial class LoggedInView : UserControl
                     PrimaryButtonText = "OK",
                     DefaultButton = ContentDialogButton.Primary
                 }.ShowAsync();
-                MainView.Instance.Frame.Navigate(typeof(LoginView));
+                ShellView.Instance.Frame.Navigate(typeof(LoginView));
                 return;
             }
             catch
