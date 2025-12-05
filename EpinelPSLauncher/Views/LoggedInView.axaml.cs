@@ -89,14 +89,14 @@ public partial class LoggedInView : UserControl
 
         if (!OperatingSystem.IsWindows() || Configuration.Instance.DisableAC)
         {
-            string newGameExectutable = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nikke.exe");
-            string newGameDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Encoding.UTF8.GetString(Convert.FromBase64String("QUNFLUJhc2U2NC5kbGw=")));
+            string newGameExectutable = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UnityInit.exe");
+            string newGameDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HelperDll.dll");
             if (!File.Exists(newGameExectutable) || !File.Exists(newGameDll))
             {
                 await new ContentDialog()
                 {
                     Title = "Warning",
-                    Content = $"Files required for Linux/MacOS support are missing. Please contact the author to obtain them. Press OK to run the game anyways.",
+                    Content = $"Files required for Linux/MacOS support are missing. Press OK to run the game anyways.",
                     PrimaryButtonText = "OK",
                     DefaultButton = ContentDialogButton.Primary
                 }.ShowAsync();
