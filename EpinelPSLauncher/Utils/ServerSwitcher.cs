@@ -43,7 +43,11 @@ namespace EpinelPSLauncher
                 return "Launcher path is invalid. Make sure that the game executable exists in the launcher folder";
             }
 
-            string launcherCertList = launcherPath + "/intl_service/cacert.pem";
+
+            // TODO fix this mess
+            string launcherCertList = launcherPath + "/intl_service/intl_cacert.pem";
+            if (!File.Exists(launcherCertList))
+                launcherCertList = launcherPath + "/intl_service/cacert.pem"; // older INTL sdk versions
             string gameCertList = gamePath + "/nikke_Data/Plugins/x86_64/intl_cacert.pem";
             if (!File.Exists(gameCertList))
                 gameCertList = gamePath + "/nikke_Data/Plugins/x86_64/cacert.pem"; // older INTL sdk versions
@@ -53,7 +57,7 @@ namespace EpinelPSLauncher
                 string certList1 = await File.ReadAllTextAsync(launcherCertList);
 
                 if (!certList1.Contains("Good SSL Ca"))
-                    return "Patch missing";
+                    return "SSL Cert Patch missing";
             }
 
             if (File.Exists(gameCertList))
@@ -61,11 +65,10 @@ namespace EpinelPSLauncher
                 string certList2 = await File.ReadAllTextAsync(gameCertList);
 
                 if (!certList2.Contains("Good SSL Ca"))
-                    return "Patch missing";
+                    return "SSL Cert Patch missing";
             }
 
             // TODO: Check sodium lib
-            // TODO: Check if gameassembly was patched
             // TODO: check hosts file
 
             return "OK";
@@ -130,7 +133,9 @@ namespace EpinelPSLauncher
             string hostsFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers/etc/hosts");
             string CAcert = await File.ReadAllTextAsync(AppDomain.CurrentDomain.BaseDirectory + "myCA.pem");
 
-            string launcherCertList = launcherPath + "/intl_service/cacert.pem";
+            string launcherCertList = launcherPath + "/intl_service/intl_cacert.pem";
+             if (!File.Exists(launcherCertList))
+                launcherCertList = launcherPath + "/intl_service/cacert.pem"; // older INTL sdk versions
             string gameCertList = gamePath + "/nikke_Data/Plugins/x86_64/intl_cacert.pem";
             if (!File.Exists(gameCertList))
                 gameCertList = gamePath + "/nikke_Data/Plugins/x86_64/cacert.pem"; // older INTL sdk versions
