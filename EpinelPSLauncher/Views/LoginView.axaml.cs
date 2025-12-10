@@ -8,6 +8,7 @@ using EpinelPSLauncher.Clients;
 using EpinelPSLauncher.Models;
 using EpinelPSLauncher.Utils;
 using FluentAvalonia.UI.Controls;
+using ServerSelector;
 
 namespace EpinelPSLauncher.Views;
 
@@ -55,7 +56,7 @@ public partial class LoginView : UserControl
             await new ContentDialog()
             {
                 Title = "Failed to authenticate",
-                Content = $"Error from server: {rsp.Message}",
+                Content = $"Error from server: {rsp}",
                 PrimaryButtonText = "OK",
                 DefaultButton = ContentDialogButton.Primary
             }.ShowAsync();
@@ -72,7 +73,7 @@ public partial class LoginView : UserControl
             await new ContentDialog()
             {
                 Title = "Failed to load profile info (part 1)",
-                Content = $"Error from server: {rsp2.Message}",
+                Content = $"Error from server: {rsp2}",
                 PrimaryButtonText = "OK",
                 DefaultButton = ContentDialogButton.Primary
             }.ShowAsync();
@@ -88,7 +89,7 @@ public partial class LoginView : UserControl
             await new ContentDialog()
             {
                 Title = "Failed to load profile info (part 2)",
-                Content = $"Error from server: {rsp3.Message}",
+                Content = $"Error from server: {rsp3}",
                 PrimaryButtonText = "OK",
                 DefaultButton = ContentDialogButton.Primary
             }.ShowAsync();
@@ -105,7 +106,7 @@ public partial class LoginView : UserControl
             await new ContentDialog()
             {
                 Title = "Failed to load profile info (part 3)",
-                Content = $"Error from server: {rsp3.Message}",
+                Content = $"Error from server: {rsp3}",
                 PrimaryButtonText = "OK",
                 DefaultButton = ContentDialogButton.Primary
             }.ShowAsync();
@@ -118,7 +119,20 @@ public partial class LoginView : UserControl
 
         try
         {
-            var result = await ServerSwitcher.SaveCfg(item.ServerIP == null, Configuration.Instance.GamePath + "/NIKKE/game/", null, item.ServerIP ??
+
+            (bool, string?) pathResult = ServerSwitcher.SetBasePath(Configuration.Instance.GamePath ?? "");
+            if (!pathResult.Item1)
+            {
+                await new ContentDialog()
+                {
+                    Title = "Server Selector",
+                    Content = pathResult.Item2,
+                    PrimaryButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Primary
+                }.ShowAsync();
+            }
+
+            var result = await ServerSwitcher.SaveCfg(item.ServerIP == null, item.ServerIP ??
         "", false);
 
             if (!result.IsSupported)

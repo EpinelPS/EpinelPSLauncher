@@ -5,6 +5,7 @@ using EpinelPSLauncher.Clients;
 using EpinelPSLauncher.Models;
 using EpinelPSLauncher.Utils;
 using FluentAvalonia.UI.Controls;
+using ServerSelector;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -245,8 +246,19 @@ public partial class LoggedInView : UserControl
             dlg.Title = $"Configuring...";
             try
             {
-                var result = await ServerSwitcher.SaveCfg(SessionData.CurrentAccount.ServerIP == null, Configuration.Instance.GamePath + "/NIKKE/game/", null, SessionData.CurrentAccount.ServerIP ??
-            "", false);
+                (bool, string?) pathResult = ServerSwitcher.SetBasePath(Configuration.Instance.GamePath ?? "");
+                if (!pathResult.Item1)
+                {
+                    await new ContentDialog()
+                    {
+                        Title = "Server Selector",
+                        Content = pathResult.Item2,
+                        PrimaryButtonText = "OK",
+                        DefaultButton = ContentDialogButton.Primary
+                    }.ShowAsync();
+                }
+
+                var result = await ServerSwitcher.SaveCfg(SessionData.CurrentAccount.ServerIP == null, SessionData.CurrentAccount.ServerIP ?? "", false);
 
                 if (!result.IsSupported)
                 {

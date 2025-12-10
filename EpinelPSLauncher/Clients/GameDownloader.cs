@@ -1,6 +1,8 @@
-﻿using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
+﻿using EpinelPSLauncher.Models;
+using EpinelPSLauncher.Protobuf;
+using EpinelPSLauncher.Utils;
+using Google.Protobuf;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,9 +11,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using EpinelPSLauncher.Models;
-using EpinelPSLauncher.Utils;
-using Google.Protobuf;
 using ZstdSharp;
 using static EpinelPSLauncher.Utils.DataUtils;
 

@@ -238,7 +238,7 @@ AntiLinuxResult Antilinux5_OnPacketRx(_In_ Client5*, BYTE* data, int len)
 	return ACE_OK;
 }
 
-AntiLinuxResult Antilinux5_Login(_In_ Client5*, LPCWSTR account, int type, UINT worldId, LPCWSTR ticket)
+AntiLinuxResult Antilinux5_Login(_In_ Client5*, LPCSTR account, int type, UINT worldId, LPCWSTR ticket)
 {
 	return ACE_OK;
 }
