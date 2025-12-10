@@ -1,5 +1,4 @@
 ﻿using EpinelPSLauncher.Models;
-using EpinelPSLauncher.Protobuf;
 using EpinelPSLauncher.Utils;
 using Google.Protobuf;
 using System;
