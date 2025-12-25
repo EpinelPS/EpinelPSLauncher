@@ -36,6 +36,6 @@
 		<TextBlock Grid.Row="3" Grid.Column="0" Text="Password: " VerticalAlignment="Center" Margin="0,5,0,0"/>
 		<TextBox x:Name="txtPass" Grid.Row="3" Grid.Column="1" Margin="0,5,0,0" PasswordChar="*"/>
 
-		<TextBlock x:Name="ErrorText" Grid.ColumnSpan="2" Grid.Row="4" Foreground="Red" Text=""></TextBlock>
+		<SelectableTextBlock x:Name="ErrorText" Grid.ColumnSpan="2" Grid.Row="4" TextWrapping="Wrap" Foreground="Red" Text=""></SelectableTextBlock>
 	</Grid>
 </UserControl>

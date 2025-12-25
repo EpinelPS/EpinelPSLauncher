@@ -252,7 +252,7 @@ public partial class LoginView : UserControl
         }
         catch (Exception ex)
         {
-            content.ErrorText.Text = ex.Message;
+            content.ErrorText.Text = ex.ToString();
             return;
         }
 

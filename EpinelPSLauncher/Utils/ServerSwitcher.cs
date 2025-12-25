@@ -253,7 +253,7 @@ public class ServerSwitcher
             await File.WriteAllBytesAsync(util.GameSodiumPath, await File.ReadAllBytesAsync(sodiumLib));
 
             // Add generated CA certificate to launcher/game curl certificate list
-            if (util.LauncherCertificatePath != null)
+            if (util.LauncherCertificatePath != null && File.Exists(util.LauncherCertificatePath))
             {
                 await File.WriteAllTextAsync(util.LauncherCertificatePath,
                     await File.ReadAllTextAsync(util.LauncherCertificatePath)
@@ -261,10 +261,13 @@ public class ServerSwitcher
                     + CAcert);
             }
 
-            await File.WriteAllTextAsync(util.GameCertificatePath,
+            if (util.GameCertificatePath != null && File.Exists(util.GameCertificatePath))
+            {
+                await File.WriteAllTextAsync(util.GameCertificatePath,
                 await File.ReadAllTextAsync(util.GameCertificatePath)
                 + "\nGood SSL Ca\n===============================\n"
                 + CAcert);
+            }
         }
 
         return new ServerSwitchResult(true, null, supported);

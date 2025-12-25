@@ -3,12 +3,21 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using EpinelPSLauncher.Utils;
 using FluentAvalonia.UI.Media.Animation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EpinelPSLauncher.Views;
 
 public partial class MainWindow : Window
 {
     public static MainWindow Instance { get; private set; } = null!;
+
+    // Note: put all view names here to allow native aot to work
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(LoginView))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(SettingsView))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ShellView))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(LoggedInView))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(AddGame))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(AddAccount))]
     public MainWindow()
     {
         InitializeComponent();
