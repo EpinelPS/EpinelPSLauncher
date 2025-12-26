@@ -24,7 +24,7 @@ public class PathUtil
         }
     }
 
-    public string? WineHostsFile => GameBasePath + "../../wine_prefix/drive_c/windows/system32/drivers/etc/hosts";
+    public string? WineHostsFile => GameBasePath + "../../../wine_prefix/drive_c/windows/system32/drivers/etc/hosts";
 
     public string? LauncherCertificatePath
     {
@@ -87,7 +87,7 @@ public class PathUtil
             {
                 return (false, "Game path is invalid. Make sure that nikke_launcher.exe exists in the <Game Path>/launcher folder");
             }
-        }
+        } else LauncherBasePath = null;
 
         if (!File.Exists(GameCertificatePath))
         {
