@@ -36,7 +36,7 @@ public partial class LoggedInView : UserControl
             channelid = 131,
             need_name_auth = SessionData.AuthResponse.need_name_auth,
             token = SessionData.AuthResponse.token,
-            channel_info = JsonSerializer.Serialize(SessionData.AuthResponse.channel_info),
+            channel_info = JsonSerializer.Serialize(SessionData.AuthResponse.channel_info, SourceGenerationContext.Default.ChannelInfo),
             link_li_uid = "",
             gender = SessionData.AuthResponse.gender,
             user_name = SessionData.AuthResponse.user_name,
@@ -123,7 +123,7 @@ public partial class LoggedInView : UserControl
 
         try
         {
-            proc = await LaunchGame.Launch(executablePath, Configuration.Instance.GameResourcePath + @"/com_proximabeta_NIKKE/", JsonSerializer.Serialize(data));
+            proc = await LaunchGame.Launch(executablePath, Configuration.Instance.GameResourcePath + @"/com_proximabeta_NIKKE/", JsonSerializer.Serialize(data, SourceGenerationContext.Default.AuthData));
         }
         catch (Exception ex)
         {
@@ -189,6 +189,12 @@ public partial class LoggedInView : UserControl
             }
         }
         Username.Text = "Username: " + SessionData.UserProfileResponseAccount.user_name;
+        UpdateVersionText();
+    }
+
+    private void UpdateVersionText()
+    {
+        GameVersion.Text = "Version: " + (string.IsNullOrEmpty(Configuration.Instance.GameVersion) ? "Unknown" : Configuration.Instance.GameVersion);
     }
 
     private async void UpdateOrRepair_Click(object? sender2, Avalonia.Interactivity.RoutedEventArgs e)
@@ -291,6 +297,8 @@ public partial class LoggedInView : UserControl
                     DefaultButton = ContentDialogButton.Primary
                 }.ShowAsync();
             }
+
+            UpdateVersionText();
 
             dlg.IsPrimaryButtonEnabled = true;
             dlg.Title = $"Update/repair complete";

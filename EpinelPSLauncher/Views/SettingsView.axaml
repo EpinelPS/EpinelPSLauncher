@@ -3,21 +3,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="EpinelPSLauncher.Views.SettingsView">
+             x:Class="EpinelPSLauncher.Views.SettingsView"
+			  xmlns:ui="using:FluentAvalonia.UI.Controls"
+			 Loaded="UserControl_Loaded">
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
-		</Grid.RowDefinitions>
 
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+	<ScrollViewer Margin="5">
+		<Grid>
+			<StackPanel Spacing="20">
+				<Button Click="Button_Click">Back</Button>
+				<TextBlock FontSize="24">Basic Settings</TextBlock>
+				<ui:SettingsExpander Header="Resource Location" Description="Default"
+						 Name="SettingsExpanderResource">
+					<ui:SettingsExpander.Footer>
+						<Button x:Name="ButtonResourceChange" Click="ButtonResourceChange_Click">Change</Button>
+					</ui:SettingsExpander.Footer>
+				</ui:SettingsExpander>
+				<ui:SettingsExpander Header="Launcher Version" Description="v0.0.1"
+				 Name="SettingsExpanderVersion">
+					<ui:SettingsExpander.Footer>
+						<Button IsEnabled="False" ToolTip.Tip="Coming soon">Check for updates</Button>
+					</ui:SettingsExpander.Footer>
+				</ui:SettingsExpander>
 
-	</Grid>
+				<TextBlock FontSize="24">Linux Settings</TextBlock>
+				<ui:SettingsExpander Header="Remove Anticheat" Description="Modify the game to improve Linux compatibility. On Windows, this could improve preformance. To disable this option, repair the game and turn off this option."
+			 Name="WinePathSelector">
+					<ui:SettingsExpander.Footer>
+						<ToggleSwitch x:Name="ChkCompat" Checked="ChkCompat_Checked"></ToggleSwitch>
+					</ui:SettingsExpander.Footer>
+				</ui:SettingsExpander>
+				
+			</StackPanel>
+		</Grid>
+	</ScrollViewer>
 </UserControl>

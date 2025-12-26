@@ -210,7 +210,7 @@ struct Client5 {
 	AntiLinuxResult(*cleanup) (_In_ Client5*);
 	AntiLinuxResult(*get_packet) (_In_ Client5*, _Inout_ Client5FullPacket*);
 	AntiLinuxResult(*on_packet_rx) (_In_ Client5*, BYTE* data, int len);
-	AntiLinuxResult(*login) (_In_ Client5*, LPCWSTR account, int type, UINT worldId, LPCWSTR ticket);
+	AntiLinuxResult(*login) (_In_ Client5*, LPCSTR account, int type, UINT worldId, LPCSTR ticket);
 	AntiLinuxResult(*get_light_packet) (_In_ Client5*, _Inout_ Client5FeaturePacket*);
 	AntiLinuxResult(*on_light_packet_rx) (_In_ Client5*, Client5Feature*);
 };
@@ -238,7 +238,7 @@ AntiLinuxResult Antilinux5_OnPacketRx(_In_ Client5*, BYTE* data, int len)
 	return ACE_OK;
 }
 
-AntiLinuxResult Antilinux5_Login(_In_ Client5*, LPCSTR account, int type, UINT worldId, LPCWSTR ticket)
+AntiLinuxResult Antilinux5_Login(_In_ Client5*, LPCSTR account, int type, UINT worldId, LPCSTR ticket)
 {
 	return ACE_OK;
 }

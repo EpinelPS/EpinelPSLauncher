@@ -98,6 +98,8 @@ namespace EpinelPSLauncher.Clients
 
         public async Task StartDownloadAsync()
         {
+            if (versionInfo == null) throw new InvalidOperationException("FetchVersionInfoAsync must be called");
+
             if (fileListing == null || fileData == null || chunksUrl == null) throw new InvalidOperationException("FetchManifestAsync must be called first");
 
             if (!DownloadPath.EndsWith('/'))
@@ -108,6 +110,9 @@ namespace EpinelPSLauncher.Clients
                 {
                     await DownloadFileAsync(x.Value, fileData.FileMapping[x.Index]);
                 });
+
+            Configuration.Instance.GameVersion = versionInfo.version_info.version_name;
+            Configuration.Save();
         }
 
         private async Task DownloadFileAsync(string item, FileEntry fileData)

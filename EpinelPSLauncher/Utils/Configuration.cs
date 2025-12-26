@@ -10,10 +10,18 @@ namespace EpinelPSLauncher.Utils
     {
         public List<AccountEntry> Accounts { get; set; } = [];
         public string GamePath { get; set; } = "";
-        public string GameResourcePath { get; set; } = "";
+        public string? GameResourcePath { get; set; } = "";
         public string WinePath { get; set; } = "/usr/bin/wine";
         public string WineTricksPath { get; set; } = "/usr/bin/winetricks";
         public bool DisableAC { get; set; }
+        public string? GameVersion { get; set; }
+
+        public string GetFullResourcePath()
+        {
+            if (string.IsNullOrEmpty(GameResourcePath))
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "Unity");
+            else return GameResourcePath;
+        }
     }
 
     public class Configuration
