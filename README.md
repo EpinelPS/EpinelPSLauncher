@@ -14,7 +14,7 @@ I started developing this during the start of 2025, but decided to upload the co
 
 [Linux download link](https://nightly.link/EpinelPS/EpinelPSLauncher/workflows/build/master/Launcher_linux-x64.zip).
 
-Extract the zip file somewhere, and run EpinelPS.Desktop.exe (or EpinelPS.Desktop if on Linux). 
+Extract the zip file somewhere, and run EpinelPSLauncher.exe (or chmod +x EpinelPSLauncher and than EpinelPSLauncher if on Linux). 
 
 ## Features
  - Run the game without any of the original launcher files
