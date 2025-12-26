@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sail_api_impl64", "sail_api_impl64\sail_api_impl64.vcxproj", "{240D874D-A615-4459-8B11-001E96834CAE}"
 EndProject
@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpinelPSLauncher", "EpinelP
 		{240D874D-A615-4459-8B11-001E96834CAE} = {240D874D-A615-4459-8B11-001E96834CAE}
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F} = {35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpinelPSLauncher.Desktop", "EpinelPSLauncher.Desktop\EpinelPSLauncher.Desktop.csproj", "{07A52955-7E5E-096E-636E-2155F51723C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LauncherUtility", "LauncherUtility\LauncherUtility.csproj", "{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -56,18 +54,6 @@ Global
 		{816E0428-D804-CB08-F490-843C4D5E3A17}.Release|x64.Build.0 = Release|Any CPU
 		{816E0428-D804-CB08-F490-843C4D5E3A17}.Release|x86.ActiveCfg = Release|Any CPU
 		{816E0428-D804-CB08-F490-843C4D5E3A17}.Release|x86.Build.0 = Release|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Debug|x64.Build.0 = Debug|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Debug|x86.Build.0 = Debug|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Release|x64.ActiveCfg = Release|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Release|x64.Build.0 = Release|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Release|x86.ActiveCfg = Release|Any CPU
-		{07A52955-7E5E-096E-636E-2155F51723C8}.Release|x86.Build.0 = Release|Any CPU
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35FA1ED1-4ADD-40B1-B5E9-F2F59744A00F}.Debug|x64.ActiveCfg = Debug|Any CPU

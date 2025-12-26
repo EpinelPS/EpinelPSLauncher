@@ -40,7 +40,7 @@ jobs:
       run: dotnet publish LauncherUtility
       
     - name: Publish Launcher for ${{ matrix.runtime }}
-      run: dotnet publish EpinelPSLauncher.Desktop --runtime ${{ matrix.runtime }}
+      run: dotnet publish EpinelPSLauncher --runtime ${{ matrix.runtime }}
 
     - name: Build launcher DLL
       run: msbuild sail_api_impl64 /p:Configuration=Release /p:Platform=x64
@@ -55,7 +55,7 @@ jobs:
       run: echo ${{ github.workspace }} && md ${{ github.workspace }}/out/
 
     - name: Copy Launcher to output
-      run: xcopy /s /e "${{ github.workspace }}\EpinelPSLauncher.Desktop\bin\Release\net10.0\${{ matrix.runtime }}\publish\" "${{ github.workspace }}\out\"
+      run: xcopy /s /e "${{ github.workspace }}\EpinelPSLauncher\bin\Release\net10.0\${{ matrix.runtime }}\publish\" "${{ github.workspace }}\out\"
     
     - name: Copy DLLs and Launcher Helper to output
       run: xcopy /s /e "${{ github.workspace }}\LauncherUtility\bin\Release\net10.0\win-x64\publish\" "${{ github.workspace }}\out\" && copy "${{ github.workspace }}\sail_api_impl64\x64\Release\sail_api_impl64.dll" "${{ github.workspace }}\out\sail_api_impl64.dll"

@@ -4,6 +4,11 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<PublishAot>true</PublishAot>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+		<OutputType>WinExe</OutputType>
     </PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
@@ -11,6 +16,7 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <!-- Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration. -->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
@@ -44,4 +50,9 @@
           <DependentUpon>ShellView.axaml</DependentUpon>
         </Compile>
     </ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(SolutionDir)LauncherUtility/bin/$(Configuration)/net10.0/win-x64/native/**" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="$(SolutionDir)$(Platform)/$(Configuration)/**" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
 </Project>
