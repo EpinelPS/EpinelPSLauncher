@@ -6,7 +6,7 @@
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
-		  <sty:FluentAvaloniaTheme />
+		  <sty:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True"/>
     </Application.Styles>
 
     <Application.Resources>
