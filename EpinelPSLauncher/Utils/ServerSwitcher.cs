@@ -1,5 +1,6 @@
 //#define GameAssemblyNeedsPatch // remove if running on versions before v124 or on v137+
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -96,12 +97,26 @@ public class ServerSwitcher
 
             txt = string.Concat(txt.AsSpan(0, startIdx), txt.AsSpan(endIdx));
 
-
-            await File.WriteAllTextAsync(hostsFilePath, txt);
+            if (OperatingSystem.IsLinux() && hostsFilePath == "/etc/hosts")
+            {
+                var x = new Process();
+                x.StartInfo.FileName = "pkexec";
+                x.StartInfo.Arguments = "bash -c \"echo $'" + txt + "' | sudo tee " + util.SystemHostsFile + "\"";
+                Console.WriteLine(x.StartInfo.Arguments );
+                x.Start();
+                if (x.ExitCode != 0)
+                {
+                    throw new Exception("Command to edit /etc/hosts failed with exit code " + x.ExitCode);
+                }
+            }
+            else
+            {
+                await File.WriteAllTextAsync(hostsFilePath, txt);
+            }
         }
         catch
         {
-
+            // TODO handle
         }
     }
 
@@ -163,7 +178,8 @@ public class ServerSwitcher
         else
         {
             // add to hosts file
-            string hosts = $@"{HostsStartMarker}
+            string hosts = $@"
+{HostsStartMarker}
 {ip} global-lobby.nikke-kr.com
 ";
             if (offlineMode)
@@ -192,23 +208,40 @@ public class ServerSwitcher
 
             try
             {
-                FileInfo fi = new(util.SystemHostsFile);
-                if (fi.IsReadOnly)
+                if (OperatingSystem.IsLinux())
                 {
-                    // try to remove readonly flag
-                    fi.IsReadOnly = false;
+                    if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
+                    {
+                        var x = new Process();
+                        x.StartInfo.FileName = "pkexec";
+                        x.StartInfo.Arguments = "bash -c \"echo $'" + hosts + "' | sudo tee -a " + util.SystemHostsFile + "\"";
+                        x.Start();
+                        x.WaitForExit();
+                        if (x.ExitCode != 0)
+                        {
+                            throw new Exception("Command to edit /etc/hosts failed with exit code " + x.ExitCode);
+                        }
+                    }
                 }
-
-                if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
+                else
                 {
-                    using StreamWriter w = File.AppendText(util.SystemHostsFile);
-                    w.WriteLine();
-                    w.Write(hosts);
+                    FileInfo fi = new(util.SystemHostsFile);
+                    if (fi.IsReadOnly)
+                    {
+                        // try to remove readonly flag
+                        fi.IsReadOnly = false;
+                    }
+
+                    if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
+                    {
+                        using StreamWriter w = File.AppendText(util.SystemHostsFile);
+                        w.Write(hosts);
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception($"cannot modify \"{util.SystemHostsFile}\" file to redirect to server, check your antivirus software");
+                throw new Exception($"cannot modify \"{util.SystemHostsFile}\" file to redirect to server, check your antivirus software", ex);
             }
 
             // Also change hosts file in wineprefix if running on linux

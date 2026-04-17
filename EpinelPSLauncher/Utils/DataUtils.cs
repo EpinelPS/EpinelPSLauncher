@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using K4os.Compression.LZ4;
 using SharpCompress.Compressors.LZMA;
-using ZstdSharp;
+using ZstdNet;
 
 namespace EpinelPSLauncher.Utils
 {
@@ -46,7 +46,6 @@ namespace EpinelPSLauncher.Utils
         public static Stream DecompressLZMA2(Stream data, int size, int streamSize)
         {
             var propertyByte = (byte)data.ReadByte();
-
             return new LzmaStream([propertyByte], data, streamSize - 1, size, null, true);
         }
 
@@ -57,7 +56,7 @@ namespace EpinelPSLauncher.Utils
             using var ms = new MemoryStream();
             await data.CopyToAsync(ms);
 
-            var decompressed = decompressor.Unwrap(ms.ToArray()).ToArray();
+            var decompressed = decompressor.Unwrap(ms.ToArray());
             return decompressed;
         }
 
