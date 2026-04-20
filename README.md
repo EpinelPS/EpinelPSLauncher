@@ -19,6 +19,4 @@ Extract the zip file somewhere, and run EpinelPSLauncher.exe (or chmod +x Epinel
 ## Features
  - Run the game without any of the original launcher files
  - Download/update the game faster than the official Launcher
-
-## TODO
- - Run the game without anti-linux systems enabled
+ - Linux support
