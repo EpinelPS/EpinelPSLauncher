@@ -46,13 +46,15 @@ namespace EpinelPSLauncher.Clients
             client = new(handler);
         }
 
+        private int GameId { get; set; } = 16601;
+        public string LauncherUrl { get; set; } = "www.jupiterlauncher.com";
         public async Task FetchVersionInfoAsync()
         {
-            client.DefaultRequestHeaders.Referrer = new Uri("https://www.jupiterlauncher.com/api/v1/fleet.repo.game.RepoSVC/GetVersion");
+            client.DefaultRequestHeaders.Referrer = new Uri($"https://{LauncherUrl}/api/v1/fleet.repo.game.RepoSVC/GetVersion");
 
-            var content = new StringContent("{\"game_id\": 16601,\"branch_id\": 1}");
+            var content = new StringContent("{\"game_id\": " + GameId + ",\"branch_id\": 1}");
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var versionResponse = await client.PostAsync("https://www.jupiterlauncher.com/api/v1/fleet.repo.game.RepoSVC/GetVersion", content);
+            var versionResponse = await client.PostAsync($"https://{LauncherUrl}/api/v1/fleet.repo.game.RepoSVC/GetVersion", content);
             client.DefaultRequestHeaders.Referrer = null;
 
             var versionResponseString = await versionResponse.Content.ReadAsStringAsync();
@@ -60,7 +62,6 @@ namespace EpinelPSLauncher.Clients
             versionInfo = JsonSerializer.Deserialize(versionResponseString, SourceGenerationContext.Default.LauncherVersion) ??
                 throw new Exception("failed to deserialize version information");
 
-            chunksUrl = versionInfo.version_info.cos_repo_files[1].cdn_root + "/chunksv2/";
             BytesTotal = long.Parse(versionInfo.version_info.installer_size);
         }
 
@@ -68,7 +69,12 @@ namespace EpinelPSLauncher.Clients
         {
             if (versionInfo == null) throw new InvalidOperationException("FetchVersionInfoAsync must be called");
 
-            var manifestRequest = await client.GetAsync(versionInfo.version_info.cos_repo_files[1].cdn_root + versionInfo.version_info.cos_repo_files[1].manifest_files[0].file_url);
+            var repo = versionInfo.version_info.cos_repo_files.Last();
+            var index = versionInfo.version_info.cos_repo_files.IndexOf(repo);
+
+            chunksUrl = repo.cdn_root + "/chunksv2/";
+
+            var manifestRequest = await client.GetAsync(repo.cdn_root + repo.manifest_files[0].file_url);
             var manifestEncryptedBytes = await manifestRequest.Content.ReadAsByteArrayAsync();
 
             TeaEncryption.Decrypt(manifestEncryptedBytes, Encoding.ASCII.GetBytes(@"3.14159265358979"), out byte[] decryptedManifest);
@@ -85,12 +91,12 @@ namespace EpinelPSLauncher.Clients
             using var decompressor = new Decompressor();
             var decompressed = decompressor.Unwrap(ms.Data.ToArray()).ToArray();
 
-            var encKey = ConvertHexStringToByteArray(versionInfo.version_info.cos_access_info[1].manifest_encrytion_key);
+            var accessData = versionInfo.version_info.cos_access_info[index];
+            var encKey = ConvertHexStringToByteArray(accessData.manifest_encrytion_key);
 
             fileData = new();
             fileData.MergeFrom(new CodedInputStream(decompressed));
-
-            var pathTableRaw = Decrypt(encKey, [.. fileData.StringsEncrypted]);
+            var pathTableRaw = Decrypt(encKey, [.. fileData.StringsEncrypted], accessData.manifest_encrytion_algorithm_id);
 
             fileListing = new();
             fileListing.MergeFrom(new CodedInputStream(pathTableRaw));
