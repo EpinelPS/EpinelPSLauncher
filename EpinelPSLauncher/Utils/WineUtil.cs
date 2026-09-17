@@ -30,6 +30,7 @@ namespace EpinelPSLauncher.Utils
             Directory.CreateDirectory(PrefixPath);
 
             await RunWinetricks(PrefixPath, "corefonts");
+            await RunWinetricks(PrefixPath, "quartz");
 
             File.WriteAllText(PrefixPath + "/.configured", "");
         }

@@ -116,7 +116,7 @@ namespace EpinelPSLauncher.Clients
                 {
                     if (responseObject.ret != 0)
                     {
-                        return new(false, "Error from server: " + responseObject.msg, null, null);
+                        return new(false, "Error from server: " + responseObject.msg + ", code: " + responseObject.ret, null, null);
                     }
                     else
                     {

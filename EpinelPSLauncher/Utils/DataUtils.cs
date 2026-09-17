@@ -106,7 +106,7 @@ namespace EpinelPSLauncher.Utils
         public static Stream DecompressLZMA2(Stream data, int size, int streamSize)
         {
             var propertyByte = (byte)data.ReadByte();
-            return new LzmaStream([propertyByte], data, streamSize - 1, size, null, true);
+            return LzmaStream.Create([propertyByte], data, streamSize - 1, size, null, true);
         }
 
         public static async Task<byte[]> DecompressZSTD(Stream data)

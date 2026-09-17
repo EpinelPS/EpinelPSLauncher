@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ZstdSharp;
+using ZstdNet;
 using static EpinelPSLauncher.Utils.DataUtils;
 
 namespace EpinelPSLauncher.Clients

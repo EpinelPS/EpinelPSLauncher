@@ -13,26 +13,26 @@
 			<StackPanel Spacing="20">
 				<Button Click="Button_Click">Back</Button>
 				<TextBlock FontSize="24">Basic Settings</TextBlock>
-				<ui:SettingsExpander Header="Resource Location" Description="Default"
+				<ui:FASettingsExpander Header="Resource Location" Description="Default"
 						 Name="SettingsExpanderResource">
-					<ui:SettingsExpander.Footer>
+					<ui:FASettingsExpander.Footer>
 						<Button x:Name="ButtonResourceChange" Click="ButtonResourceChange_Click">Change</Button>
-					</ui:SettingsExpander.Footer>
-				</ui:SettingsExpander>
-				<ui:SettingsExpander Header="Launcher Version" Description="v0.0.1"
+					</ui:FASettingsExpander.Footer>
+				</ui:FASettingsExpander>
+				<ui:FASettingsExpander Header="Launcher Version" Description="v0.0.1"
 				 Name="SettingsExpanderVersion">
-					<ui:SettingsExpander.Footer>
+					<ui:FASettingsExpander.Footer>
 						<Button IsEnabled="False" ToolTip.Tip="Coming soon">Check for updates</Button>
-					</ui:SettingsExpander.Footer>
-				</ui:SettingsExpander>
+					</ui:FASettingsExpander.Footer>
+				</ui:FASettingsExpander>
 
 				<TextBlock FontSize="24">Linux Settings</TextBlock>
-				<ui:SettingsExpander Header="Remove Anticheat" Description="Modify the game to improve Linux compatibility. On Windows, this could improve preformance. To disable this option, repair the game and turn off this option."
+				<ui:FASettingsExpander Header="Remove Anticheat" Description="Modify the game to improve Linux compatibility. On Windows, this could improve preformance. To disable this option, repair the game and turn off this option."
 			 Name="WinePathSelector">
-					<ui:SettingsExpander.Footer>
-						<ToggleSwitch x:Name="ChkCompat" Checked="ChkCompat_Checked"></ToggleSwitch>
-					</ui:SettingsExpander.Footer>
-				</ui:SettingsExpander>
+					<ui:FASettingsExpander.Footer>
+						<ToggleSwitch x:Name="ChkCompat" IsCheckedChanged="ChkCompat_Checked"></ToggleSwitch>
+					</ui:FASettingsExpander.Footer>
+				</ui:FASettingsExpander>
 				
 			</StackPanel>
 		</Grid>

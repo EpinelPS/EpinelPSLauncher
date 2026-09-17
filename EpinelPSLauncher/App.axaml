@@ -3,15 +3,23 @@
              x:Class="EpinelPSLauncher.App"
              RequestedThemeVariant="Default"
 			       xmlns:sty="using:FluentAvalonia.Styling">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
 		  <sty:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True"/>
     </Application.Styles>
 
     <Application.Resources>
-      <Color x:Key="SystemAccentColor">Blue</Color>
-      <Color x:Key="SystemAccentColorLight1">LightBlue</Color>
-      <Color x:Key="SystemAccentColorDark1">DarkBlue</Color>
+      <ResourceDictionary>
+        <ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary x:Key="Light">
+                <Color x:Key="BGGradient1">#afb9dc</Color>
+                <Color x:Key="BGGradient2">#8097f3</Color>
+            </ResourceDictionary>
+            <ResourceDictionary x:Key="Dark">
+                <Color x:Key="BGGradient1">#15171E</Color>
+                <Color x:Key="BGGradient2">#2a3045</Color>
+            </ResourceDictionary>
+        </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
     </Application.Resources>
 </Application>

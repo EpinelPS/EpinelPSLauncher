@@ -13,7 +13,7 @@
 			<ImageBrush Source="avares://EpinelPSLauncher/Assets/bg.jpg" Stretch="Fill"></ImageBrush>
 		</Grid.Background>-->
 		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadingUI" IsVisible="False">
-			<ui:ProgressRing Height="48" Width="48"></ui:ProgressRing>
+			<ui:FAProgressRing Height="48" Width="48"></ui:FAProgressRing>
 			<TextBlock x:Name="LoadingText">Please wait...</TextBlock>
 		</StackPanel>
 		<Border x:Name="LoginSubpage" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" Padding="30" CornerRadius="10">
@@ -41,7 +41,7 @@
 										<ContextMenu.Items>
 											<MenuItem Header="Remove">
 												<MenuItem.Icon>
-													<ui:SymbolIcon Symbol="Remove"/>
+													<ui:FASymbolIcon Symbol="Remove"/>
 												</MenuItem.Icon>
 											</MenuItem>
 										</ContextMenu.Items>
@@ -54,7 +54,7 @@
 
 				<Button Grid.Row="2" Grid.Column="0" BorderThickness="1" Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,15,0,0" Click="AddAccount_Click">
 					<WrapPanel Orientation="Horizontal">
-						<ui:SymbolIcon Symbol="Add" Margin="0,0,10,0"></ui:SymbolIcon>
+						<ui:FASymbolIcon Symbol="Add" Margin="0,0,10,0"></ui:FASymbolIcon>
 						<TextBlock Text="Add new account"></TextBlock>
 					</WrapPanel>
 				</Button>

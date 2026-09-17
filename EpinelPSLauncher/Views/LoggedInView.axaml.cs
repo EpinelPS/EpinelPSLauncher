@@ -5,7 +5,6 @@ using EpinelPSLauncher.Clients;
 using EpinelPSLauncher.Models;
 using EpinelPSLauncher.Utils;
 using FluentAvalonia.UI.Controls;
-using ServerSelector;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -74,12 +73,12 @@ public partial class LoggedInView : UserControl
         string executablePath = Path.Combine(Configuration.Instance.GamePath, @"NIKKE/game/nikke.exe");
         if (!File.Exists(executablePath))
         {
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Failed to start",
                 Content = $"File does not exist: {executablePath}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
             return;
         }
@@ -90,12 +89,12 @@ public partial class LoggedInView : UserControl
             string newGameDll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HelperDll.dll");
             if (!File.Exists(newGameExectutable) || !File.Exists(newGameDll))
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Warning",
                     Content = $"Files required for Linux/MacOS support are missing. Press OK to run the game anyways.",
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
             }
             else
@@ -107,12 +106,12 @@ public partial class LoggedInView : UserControl
                 }
                 catch (Exception ex)
                 {
-                    await new ContentDialog()
+                    await new FAContentDialog()
                     {
                         Title = "Error",
                         Content = $"{ex.Message}",
                         PrimaryButtonText = "OK",
-                        DefaultButton = ContentDialogButton.Primary
+                        DefaultButton = FAContentDialogButton.Primary
                     }.ShowAsync();
                 }
             }
@@ -129,12 +128,12 @@ public partial class LoggedInView : UserControl
         {
             PlayButton.Content = @"Play";
             PlayButton.IsEnabled = true;
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Failed to start",
                 Content = $"{ex.Message}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
         }
 
@@ -153,12 +152,12 @@ public partial class LoggedInView : UserControl
             MainWindow.Instance.Activate();
             if (proc != null && proc.ExitCode != 0)
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Game exited",
                     Content = $"Exit code: {proc.ExitCode}",
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
             }
 
@@ -172,12 +171,12 @@ public partial class LoggedInView : UserControl
         {
             try
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Invalid session",
                     Content = $"Session data is invalid.",
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
                 ShellView.Instance.Frame.Navigate(typeof(LoginView));
                 return;
@@ -203,7 +202,7 @@ public partial class LoggedInView : UserControl
 
 
         AddGame content = new();
-        ContentDialog dlg = new() { Title = "Download/update" };
+        FAContentDialog dlg = new() { Title = "Download/update" };
 
         content.Page1.IsVisible = false;
         content.InstallPage.IsVisible = true;
@@ -255,12 +254,12 @@ public partial class LoggedInView : UserControl
                 (bool, string?) pathResult = ServerSwitcher.SetBasePath(Configuration.Instance.GamePath ?? "");
                 if (!pathResult.Item1)
                 {
-                    await new ContentDialog()
+                    await new FAContentDialog()
                     {
                         Title = "Server Selector",
                         Content = pathResult.Item2,
                         PrimaryButtonText = "OK",
-                        DefaultButton = ContentDialogButton.Primary
+                        DefaultButton = FAContentDialogButton.Primary
                     }.ShowAsync();
                 }
 
@@ -268,33 +267,33 @@ public partial class LoggedInView : UserControl
 
                 if (!result.IsSupported)
                 {
-                    await new ContentDialog()
+                    await new FAContentDialog()
                     {
                         Title = "Server Selector",
                         Content = $"Game version might not be supported",
                         PrimaryButtonText = "OK",
-                        DefaultButton = ContentDialogButton.Primary
+                        DefaultButton = FAContentDialogButton.Primary
                     }.ShowAsync();
                 }
                 if (!result.Ok)
                 {
-                    await new ContentDialog()
+                    await new FAContentDialog()
                     {
                         Title = "Server Selector",
                         Content = $"Failed to switch to server:\n{result.Exception}",
                         PrimaryButtonText = "OK",
-                        DefaultButton = ContentDialogButton.Primary
+                        DefaultButton = FAContentDialogButton.Primary
                     }.ShowAsync();
                 }
             }
             catch (Exception ex)
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Server Selector",
                     Content = $"Failed to switch to server:\n{ex}",
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
             }
 

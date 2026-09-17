@@ -8,7 +8,6 @@ using EpinelPSLauncher.Clients;
 using EpinelPSLauncher.Models;
 using EpinelPSLauncher.Utils;
 using FluentAvalonia.UI.Controls;
-using ServerSelector;
 
 namespace EpinelPSLauncher.Views;
 
@@ -53,12 +52,12 @@ public partial class LoginView : UserControl
         {
             LoginSubpage.IsVisible = true;
             LoadingUI.IsVisible = false;
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Failed to authenticate",
                 Content = $"Error from server: {rsp}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
             return;
         }
@@ -70,12 +69,12 @@ public partial class LoginView : UserControl
         {
             LoginSubpage.IsVisible = true;
             LoadingUI.IsVisible = false;
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Failed to load profile info (part 1)",
                 Content = $"Error from server: {rsp2}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
             return;
         }
@@ -86,12 +85,12 @@ public partial class LoginView : UserControl
         {
             LoginSubpage.IsVisible = true;
             LoadingUI.IsVisible = false;
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Failed to load profile info (part 2)",
                 Content = $"Error from server: {rsp3}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
             return;
         }
@@ -103,12 +102,12 @@ public partial class LoginView : UserControl
         {
             LoginSubpage.IsVisible = true;
             LoadingUI.IsVisible = false;
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Failed to load profile info (part 3)",
                 Content = $"Error from server: {rsp3}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
             return;
         }
@@ -123,12 +122,12 @@ public partial class LoginView : UserControl
             (bool, string?) pathResult = ServerSwitcher.SetBasePath(Configuration.Instance.GamePath ?? "");
             if (!pathResult.Item1)
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Server Selector",
                     Content = pathResult.Item2,
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
             }
 
@@ -137,33 +136,33 @@ public partial class LoginView : UserControl
 
             if (!result.IsSupported)
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Server Selector",
                     Content = $"Game version might not be supported",
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
             }
             if (!result.Ok)
             {
-                await new ContentDialog()
+                await new FAContentDialog()
                 {
                     Title = "Server Selector",
                     Content = $"Failed to switch to server:\n{result.Exception}",
                     PrimaryButtonText = "OK",
-                    DefaultButton = ContentDialogButton.Primary
+                    DefaultButton = FAContentDialogButton.Primary
                 }.ShowAsync();
             }
         }
         catch (Exception ex)
         {
-            await new ContentDialog()
+            await new FAContentDialog()
             {
                 Title = "Server Selector",
                 Content = $"Failed to switch to server:\n{ex}",
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             }.ShowAsync();
         }
 
@@ -190,18 +189,18 @@ public partial class LoginView : UserControl
     private async void AddAccount_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         AddAccount content = new();
-        ContentDialog dlg = new()
+        FAContentDialog dlg = new()
         {
             Title = "Add new account",
             Content = content,
             PrimaryButtonText = "Add",
             SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
 
         dlg.PrimaryButtonClick += AddAccountDlg_PrimaryButtonClick;
 
-        if (await dlg.ShowAsync() == ContentDialogResult.Primary)
+        if (await dlg.ShowAsync() == FAContentDialogResult.Primary)
         {
             LoadAccounts();
         }
@@ -237,7 +236,7 @@ public partial class LoginView : UserControl
         LoadingUI.IsVisible = false;
 
     }
-    private async void AddAccountDlg_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    private async void AddAccountDlg_PrimaryButtonClick(FAContentDialog sender, FAContentDialogButtonClickEventArgs args)
     {
         AddAccount? content = (AddAccount?)sender.Content;
         if (content == null) return;
@@ -264,12 +263,12 @@ public partial class LoginView : UserControl
     {
         if (string.IsNullOrEmpty(Configuration.Instance.GamePath))
         {
-            ContentDialog dlg = new()
+            FAContentDialog dlg = new()
             {
                 Title = "Select game path",
                 Content = new AddGame(),
                 PrimaryButtonText = "OK",
-                DefaultButton = ContentDialogButton.Primary
+                DefaultButton = FAContentDialogButton.Primary
             };
 
             dlg.PrimaryButtonClick += AddGameDlg_PrimaryButtonClick;
@@ -278,7 +277,7 @@ public partial class LoginView : UserControl
         }
     }
 
-    private async void AddGameDlg_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    private async void AddGameDlg_PrimaryButtonClick(FAContentDialog sender, FAContentDialogButtonClickEventArgs args)
     {
         var content = (AddGame?)sender.Content;
         if (content == null) return;

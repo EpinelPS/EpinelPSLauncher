@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ServerSelector;
+namespace EpinelPSLauncher.Utils;
 
 public class PathUtil
 {

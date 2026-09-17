@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using EpinelPSLauncher.Utils;
 
-namespace ServerSelector;
+namespace EpinelPSLauncher.Utils;
 
 public class ServerSwitcher
 {
@@ -263,7 +264,7 @@ public class ServerSwitcher
                 {
                     X509Store store = new(StoreName.Root, StoreLocation.LocalMachine);
                     store.Open(OpenFlags.ReadWrite);
-                    store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(AppDomain.CurrentDomain.BaseDirectory + "myCA.pfx")));
+                    store.Add(new X509Certificate2(X509Certificate.CreateFromCertFile(AppDomain.CurrentDomain.BaseDirectory + "myCA.pfx")));
                     store.Close();
                 }
             }

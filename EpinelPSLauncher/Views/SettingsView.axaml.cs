@@ -59,11 +59,11 @@ public partial class SettingsView : UserControl
             UpdateResourceLocationText();
 
 
-            ContentDialog dlg = new()
+            FAContentDialog dlg = new()
             {
                 Title = "Notice",
                 Content = $"The contents of the com_proximabeta_NIKKE directory should be moved manually from {oldPath} to {Configuration.Instance.GameResourcePath}",
-                DefaultButton = ContentDialogButton.Primary,
+                DefaultButton = FAContentDialogButton.Primary,
                 PrimaryButtonText = "OK"
             };
             await dlg.ShowAsync();

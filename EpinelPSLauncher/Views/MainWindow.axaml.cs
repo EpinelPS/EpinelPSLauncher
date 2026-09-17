@@ -23,20 +23,6 @@ public partial class MainWindow : Window
         InitializeComponent();
         Instance = this;
     }
-
-    private void WindowPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-        {
-            BeginMoveDrag(e);
-        }
-    }
-
-    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         Close();
@@ -54,7 +40,7 @@ public partial class MainWindow : Window
         SessionData.UserProfileResponse = null!;
         SessionData.UserProfileResponseAccount = null!;
 
-        ShellView.Instance.Frame.Navigate(typeof(LoginView), new(), new DrillInNavigationTransitionInfo());
+        ShellView.Instance.Frame.Navigate(typeof(LoginView), new(), new FADrillInNavigationTransitionInfo());
         ShellView.Instance.Frame.BackStack.Clear();
     }
 
