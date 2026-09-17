@@ -31,6 +31,8 @@ namespace EpinelPSLauncher.Utils
                 }
                 if (!File.Exists(Configuration.Instance.WinePath)) throw new Exception($"Wine executable is missing ({Configuration.Instance.WinePath})");
 
+                args = $"\"Z:{gameExe.Replace("/", "\\\\")}\" \"Z:{resourcePath.Replace("\\", "\\\\").Replace("/", "\\\\")}\" {Convert.ToBase64String(Encoding.ASCII.GetBytes(loginData))}";
+
                 startInfo.Arguments = $"\"{processName}\" {args}";
                 startInfo.FileName = Configuration.Instance.WinePath;
                 startInfo.EnvironmentVariables.Add("WINEPREFIX", WineUtil.PrefixPath);

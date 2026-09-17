@@ -130,7 +130,7 @@ public class ServerSwitcher
         if (useOffical)
         {
             await RevertHostsFile(util.SystemHostsFile);
-            if (OperatingSystem.IsLinux())
+            if (OperatingSystem.IsLinux() && util.WineHostsFile != null)
             {
                 await RevertHostsFile(util.WineHostsFile);
             }
@@ -246,7 +246,7 @@ public class ServerSwitcher
             }
 
             // Also change hosts file in wineprefix if running on linux
-            if (OperatingSystem.IsLinux())
+            if (OperatingSystem.IsLinux() && util.WineHostsFile != null)
             {
                 await RevertHostsFile(util.WineHostsFile);
                 if (!(await File.ReadAllTextAsync(util.WineHostsFile)).Contains("global-lobby.nikke-kr.com"))
