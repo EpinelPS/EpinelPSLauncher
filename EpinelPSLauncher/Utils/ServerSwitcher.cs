@@ -57,73 +57,139 @@ public class ServerSwitcher
         return "OK";
     }
 
-    public static async Task RevertHostsFile(string hostsFilePath)
+    private static async Task WriteHostsFileAsync(string filePath, string content)
     {
-        string txt = await File.ReadAllTextAsync(hostsFilePath);
-
-        // remove stuff
-        try
+        if (OperatingSystem.IsLinux() && filePath == "/etc/hosts")
         {
+            string tempFile = Path.GetTempFileName();
+            await File.WriteAllTextAsync(tempFile, content);
 
-            int startIdx = txt.IndexOf(HostsStartMarker);
-            int endIdx;
-            if (startIdx == -1)
-            {
-                startIdx = txt.IndexOf("cloud.nikke-kr.com");
-            }
+            using var x = new Process();
+            x.StartInfo.FileName = "pkexec";
+            x.StartInfo.Arguments = $"cp \"{tempFile}\" \"{filePath}\"";
+            
+            x.Start();
+            await x.WaitForExitAsync(); 
 
-            string endIndexStr = HostsEndMarker;
-            if (!txt.Contains(endIndexStr))
-            {
-                // old code, find new line character before start index
-                for (int i = startIdx - 1; i >= 0; i--)
-                {
-                    char c = txt[i];
-                    if (c == '\n')
-                    {
-                        startIdx = i + 1;
-                        break;
-                    }
-                }
+            File.Delete(tempFile);
 
-                endIndexStr = "y.io";
-                endIdx = txt.IndexOf(endIndexStr) + endIndexStr.Length;
-            }
-            else
+            if (x.ExitCode != 0)
             {
-                // add/subtract 2 to take into account newline
-                startIdx = txt.IndexOf(HostsStartMarker) - 2;
-                endIdx = txt.IndexOf(endIndexStr) + endIndexStr.Length;
-            }
-
-            txt = string.Concat(txt.AsSpan(0, startIdx), txt.AsSpan(endIdx));
-
-            if (OperatingSystem.IsLinux() && hostsFilePath == "/etc/hosts")
-            {
-                var x = new Process();
-                x.StartInfo.FileName = "pkexec";
-                x.StartInfo.Arguments = "bash -c \"echo $'" + txt + "' | sudo tee " + util.SystemHostsFile + "\"";
-                Console.WriteLine(x.StartInfo.Arguments);
-                x.Start();
-                if (x.ExitCode != 0)
-                {
-                    throw new Exception("Command to edit /etc/hosts failed with exit code " + x.ExitCode);
-                }
-            }
-            else
-            {
-                await File.WriteAllTextAsync(hostsFilePath, txt);
+                throw new Exception($"Command to edit {filePath} failed with exit code {x.ExitCode}");
             }
         }
-        catch
+        else
         {
-            // TODO handle
+            FileInfo fi = new(filePath);
+            if (fi.Exists && fi.IsReadOnly)
+            {
+                fi.IsReadOnly = false;
+            }
+            await File.WriteAllTextAsync(filePath, content);
+        }
+    }
+
+    private static string CleanHostsText(string txt)
+    {
+        int startIdx = txt.IndexOf(HostsStartMarker);
+        int endIdx = -1;
+
+        if (startIdx != -1)
+        {
+            if (startIdx >= 2 && txt[startIdx - 1] == '\n' && txt[startIdx - 2] == '\r')
+                startIdx -= 2;
+            else if (startIdx >= 1 && txt[startIdx - 1] == '\n')
+                startIdx -= 1;
+
+            endIdx = txt.IndexOf(HostsEndMarker, startIdx);
+            if (endIdx != -1)
+            {
+                endIdx += HostsEndMarker.Length;
+            }
+        }
+        else
+        {
+            // Fallback for legacy format
+            int legacyStart = txt.IndexOf("cloud.nikke-kr.com");
+            if (legacyStart != -1)
+            {
+                startIdx = txt.LastIndexOf('\n', legacyStart);
+                if (startIdx == -1) startIdx = 0;
+
+                int legacyEnd = txt.IndexOf("y.io", legacyStart);
+                if (legacyEnd != -1)
+                {
+                    endIdx = legacyEnd + "y.io".Length;
+                }
+            }
+        }
+
+        if (startIdx != -1 && endIdx != -1 && endIdx > startIdx)
+        {
+            return string.Concat(txt.AsSpan(0, startIdx), txt.AsSpan(endIdx));
+        }
+
+        return txt;
+    }
+
+    public static async Task RevertHostsFile(string hostsFilePath)
+    {
+        if (!File.Exists(hostsFilePath)) return;
+
+        try
+        {
+            string currentText = await File.ReadAllTextAsync(hostsFilePath);
+            string cleanedText = CleanHostsText(currentText);
+
+            // Only write if necessary
+            if (currentText != cleanedText)
+            {
+                await WriteHostsFileAsync(hostsFilePath, cleanedText);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to revert hosts file '{hostsFilePath}': {ex.Message}");
+        }
+    }
+
+    private static async Task UpdateHostsFileIfNeeded(string filePath, string newBlock)
+    {
+        if (!File.Exists(filePath)) return;
+
+        try
+        {
+            string currentText = await File.ReadAllTextAsync(filePath);
+            
+            // Normalize line endings to avoid false-positives between Windows (\r\n) and Linux (\n)
+            string normalizedCurrent = currentText.Replace("\r\n", "\n");
+            string normalizedBlock = newBlock.Replace("\r\n", "\n").Trim();
+
+            if (normalizedCurrent.Contains(normalizedBlock))
+            {
+                // The exact configuration (IP and offline mode) is already present.
+                return; 
+            }
+
+            // Remove any old/different configuration block
+            string cleanedText = CleanHostsText(currentText);
+
+            if (!cleanedText.EndsWith("\n") && cleanedText.Length > 0)
+            {
+                cleanedText += Environment.NewLine;
+            }
+
+            string newText = cleanedText + newBlock;
+            await WriteHostsFileAsync(filePath, newText);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Cannot modify \"{filePath}\" file to redirect to server, check your antivirus software", ex);
         }
     }
 
     private static async Task ModifyHosts(bool offlineMode, string ip)
     {
-        // add to hosts file
         string hosts = $@"
 {HostsStartMarker}
 {ip} global-lobby.nikke-kr.com
@@ -150,56 +216,13 @@ public class ServerSwitcher
 255.255.221.21 sentry.io
 {HostsEndMarker}";
 
-        await RevertHostsFile(util.SystemHostsFile);
+        // Safely evaluate and update the system hosts file
+        await UpdateHostsFileIfNeeded(util.SystemHostsFile, hosts);
 
-        try
+        // Safely evaluate and update the Wine hosts file if necessary
+        if (OperatingSystem.IsLinux() && !string.IsNullOrEmpty(util.WineHostsFile))
         {
-            if (OperatingSystem.IsLinux())
-            {
-                if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
-                {
-                    var x = new Process();
-                    x.StartInfo.FileName = "pkexec";
-                    x.StartInfo.Arguments = "bash -c \"echo $'" + hosts + "' | sudo tee -a " + util.SystemHostsFile + "\"";
-                    x.Start();
-                    x.WaitForExit();
-                    if (x.ExitCode != 0)
-                    {
-                        throw new Exception("Command to edit /etc/hosts failed with exit code " + x.ExitCode);
-                    }
-                }
-            }
-            else
-            {
-                FileInfo fi = new(util.SystemHostsFile);
-                if (fi.IsReadOnly)
-                {
-                    // try to remove readonly flag
-                    fi.IsReadOnly = false;
-                }
-
-                if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
-                {
-                    using StreamWriter w = File.AppendText(util.SystemHostsFile);
-                    w.Write(hosts);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"cannot modify \"{util.SystemHostsFile}\" file to redirect to server, check your antivirus software", ex);
-        }
-
-        // Also change hosts file in wineprefix if running on linux
-        if (OperatingSystem.IsLinux() && util.WineHostsFile != null)
-        {
-            await RevertHostsFile(util.WineHostsFile);
-            if (!(await File.ReadAllTextAsync(util.WineHostsFile)).Contains("global-lobby.nikke-kr.com"))
-            {
-                using StreamWriter w = File.AppendText(util.WineHostsFile);
-                w.WriteLine();
-                w.Write(hosts);
-            }
+            await UpdateHostsFileIfNeeded(util.WineHostsFile, hosts);
         }
     }
 
