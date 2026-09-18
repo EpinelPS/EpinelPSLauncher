@@ -187,7 +187,8 @@ public partial class LoggedInView : UserControl
                 return;
             }
         }
-        Username.Text = "Username: " + SessionData.UserProfileResponseAccount.user_name;
+        MainWindow.Instance.Username.Text = "Username: " + SessionData.UserProfileResponseAccount.user_name;
+        
         UpdateVersionText();
     }
 

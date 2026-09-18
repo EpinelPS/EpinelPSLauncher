@@ -28,10 +28,16 @@ public partial class MainWindow : Window
         Close();
     }
 
+    private void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Username.IsVisible = true;
+        BackButton.IsVisible = false;
+        ShellView.Instance.Frame.GoBack();
+    }
+
     private void Logout_Click(object sender, RoutedEventArgs e)
     {
         if (AccountButton.Flyout == null) return;
-
         AccountButton.Flyout.Hide();
         
         // TODO issue logout request
@@ -40,12 +46,17 @@ public partial class MainWindow : Window
         SessionData.UserProfileResponse = null!;
         SessionData.UserProfileResponseAccount = null!;
 
+        Username.Text = "";
+
         ShellView.Instance.Frame.Navigate(typeof(LoginView), new(), new FADrillInNavigationTransitionInfo());
         ShellView.Instance.Frame.BackStack.Clear();
     }
 
     private void Settings_Click(object sender, RoutedEventArgs e)
     {
+        if (AccountButton.Flyout == null) return;
+        AccountButton.Flyout.Hide();
+
         ShellView.Instance.Frame.Navigate(typeof(SettingsView));
     }
 }

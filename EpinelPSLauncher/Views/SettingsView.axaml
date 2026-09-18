@@ -11,7 +11,6 @@
 	<ScrollViewer Margin="5">
 		<Grid>
 			<StackPanel Spacing="20">
-				<Button Click="Button_Click">Back</Button>
 				<TextBlock FontSize="24">Basic Settings</TextBlock>
 				<ui:FASettingsExpander Header="Resource Location" Description="Default"
 						 Name="SettingsExpanderResource">

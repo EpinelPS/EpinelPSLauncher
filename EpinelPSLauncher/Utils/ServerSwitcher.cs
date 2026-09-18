@@ -103,7 +103,7 @@ public class ServerSwitcher
                 var x = new Process();
                 x.StartInfo.FileName = "pkexec";
                 x.StartInfo.Arguments = "bash -c \"echo $'" + txt + "' | sudo tee " + util.SystemHostsFile + "\"";
-                Console.WriteLine(x.StartInfo.Arguments );
+                Console.WriteLine(x.StartInfo.Arguments);
                 x.Start();
                 if (x.ExitCode != 0)
                 {
@@ -118,6 +118,88 @@ public class ServerSwitcher
         catch
         {
             // TODO handle
+        }
+    }
+
+    private static async Task ModifyHosts(bool offlineMode, string ip)
+    {
+        // add to hosts file
+        string hosts = $@"
+{HostsStartMarker}
+{ip} global-lobby.nikke-kr.com
+";
+        if (offlineMode)
+        {
+            hosts += $"{ip} cloud.nikke-kr.com" + Environment.NewLine;
+        }
+
+        hosts += $@"{ip} jp-lobby.nikke-kr.com
+{ip} us-lobby.nikke-kr.com
+{ip} kr-lobby.nikke-kr.com
+{ip} sea-lobby.nikke-kr.com
+{ip} hmt-lobby.nikke-kr.com
+{ip} aws-na-dr.intlgame.com
+{ip} sg-vas.intlgame.com
+{ip} aws-na.intlgame.com
+{ip} na-community.playerinfinite.com
+{ip} common-web.intlgame.com
+{ip} li-sg.intlgame.com
+255.255.221.21 na.fleetlogd.com
+{ip} www.jupiterlauncher.com
+{ip} data-aws-na.intlgame.com
+255.255.221.21 sentry.io
+{HostsEndMarker}";
+
+        await RevertHostsFile(util.SystemHostsFile);
+
+        try
+        {
+            if (OperatingSystem.IsLinux())
+            {
+                if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
+                {
+                    var x = new Process();
+                    x.StartInfo.FileName = "pkexec";
+                    x.StartInfo.Arguments = "bash -c \"echo $'" + hosts + "' | sudo tee -a " + util.SystemHostsFile + "\"";
+                    x.Start();
+                    x.WaitForExit();
+                    if (x.ExitCode != 0)
+                    {
+                        throw new Exception("Command to edit /etc/hosts failed with exit code " + x.ExitCode);
+                    }
+                }
+            }
+            else
+            {
+                FileInfo fi = new(util.SystemHostsFile);
+                if (fi.IsReadOnly)
+                {
+                    // try to remove readonly flag
+                    fi.IsReadOnly = false;
+                }
+
+                if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
+                {
+                    using StreamWriter w = File.AppendText(util.SystemHostsFile);
+                    w.Write(hosts);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"cannot modify \"{util.SystemHostsFile}\" file to redirect to server, check your antivirus software", ex);
+        }
+
+        // Also change hosts file in wineprefix if running on linux
+        if (OperatingSystem.IsLinux() && util.WineHostsFile != null)
+        {
+            await RevertHostsFile(util.WineHostsFile);
+            if (!(await File.ReadAllTextAsync(util.WineHostsFile)).Contains("global-lobby.nikke-kr.com"))
+            {
+                using StreamWriter w = File.AppendText(util.WineHostsFile);
+                w.WriteLine();
+                w.Write(hosts);
+            }
         }
     }
 
@@ -178,84 +260,7 @@ public class ServerSwitcher
         }
         else
         {
-            // add to hosts file
-            string hosts = $@"
-{HostsStartMarker}
-{ip} global-lobby.nikke-kr.com
-";
-            if (offlineMode)
-            {
-                hosts += $"{ip} cloud.nikke-kr.com" + Environment.NewLine;
-            }
-
-            hosts += $@"{ip} jp-lobby.nikke-kr.com
-{ip} us-lobby.nikke-kr.com
-{ip} kr-lobby.nikke-kr.com
-{ip} sea-lobby.nikke-kr.com
-{ip} hmt-lobby.nikke-kr.com
-{ip} aws-na-dr.intlgame.com
-{ip} sg-vas.intlgame.com
-{ip} aws-na.intlgame.com
-{ip} na-community.playerinfinite.com
-{ip} common-web.intlgame.com
-{ip} li-sg.intlgame.com
-255.255.221.21 na.fleetlogd.com
-{ip} www.jupiterlauncher.com
-{ip} data-aws-na.intlgame.com
-255.255.221.21 sentry.io
-{HostsEndMarker}";
-
-            await RevertHostsFile(util.SystemHostsFile);
-
-            try
-            {
-                if (OperatingSystem.IsLinux())
-                {
-                    if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
-                    {
-                        var x = new Process();
-                        x.StartInfo.FileName = "pkexec";
-                        x.StartInfo.Arguments = "bash -c \"echo $'" + hosts + "' | sudo tee -a " + util.SystemHostsFile + "\"";
-                        x.Start();
-                        x.WaitForExit();
-                        if (x.ExitCode != 0)
-                        {
-                            throw new Exception("Command to edit /etc/hosts failed with exit code " + x.ExitCode);
-                        }
-                    }
-                }
-                else
-                {
-                    FileInfo fi = new(util.SystemHostsFile);
-                    if (fi.IsReadOnly)
-                    {
-                        // try to remove readonly flag
-                        fi.IsReadOnly = false;
-                    }
-
-                    if (!(await File.ReadAllTextAsync(util.SystemHostsFile)).Contains("global-lobby.nikke-kr.com"))
-                    {
-                        using StreamWriter w = File.AppendText(util.SystemHostsFile);
-                        w.Write(hosts);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"cannot modify \"{util.SystemHostsFile}\" file to redirect to server, check your antivirus software", ex);
-            }
-
-            // Also change hosts file in wineprefix if running on linux
-            if (OperatingSystem.IsLinux() && util.WineHostsFile != null)
-            {
-                await RevertHostsFile(util.WineHostsFile);
-                if (!(await File.ReadAllTextAsync(util.WineHostsFile)).Contains("global-lobby.nikke-kr.com"))
-                {
-                    using StreamWriter w = File.AppendText(util.WineHostsFile);
-                    w.WriteLine();
-                    w.Write(hosts);
-                }
-            }
+            await ModifyHosts(offlineMode, ip);
 
             // trust CA. TODO is this needed?
             try

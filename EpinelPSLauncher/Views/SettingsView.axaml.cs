@@ -18,11 +18,6 @@ public partial class SettingsView : UserControl
         InitializeComponent();
     }
 
-    private void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        ShellView.Instance.Frame.GoBack();
-    }
-
     private void ChkCompat_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Configuration.Instance.DisableAC = ChkCompat.IsChecked == true;
@@ -33,6 +28,9 @@ public partial class SettingsView : UserControl
     {
         SettingsExpanderVersion.Description = $"v{Assembly.GetExecutingAssembly().GetName().Version}";
         ChkCompat.IsChecked = Configuration.Instance.DisableAC;
+        MainWindow.Instance.Username.IsVisible = false;
+        MainWindow.Instance.BackButton.IsVisible = true;
+
         UpdateResourceLocationText();
     }
 

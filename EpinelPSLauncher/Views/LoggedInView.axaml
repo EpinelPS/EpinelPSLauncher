@@ -8,10 +8,8 @@
 	<Grid Margin="2">
 
 		<Button x:Name="UpdateRepairButton" Click="UpdateOrRepair_Click" VerticalAlignment="Bottom">Update/repair</Button>
-			<TextBlock x:Name="Username"></TextBlock>
-
 		<StackPanel x:Name="InstallArea" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Orientation="Vertical">
-		<TextBlock x:Name="GameVersion" HorizontalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimary}">Version: Unknown</TextBlock>
+		<TextBlock x:Name="GameVersion" HorizontalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimary}" Margin="5">Version: Unknown</TextBlock>
 			<Button x:Name="PlayButton" Click="Play_Click" Padding="100,20,100,20">Play</Button>
 		</StackPanel>
 	</Grid>

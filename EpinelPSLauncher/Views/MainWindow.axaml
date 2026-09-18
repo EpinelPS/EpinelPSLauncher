@@ -26,8 +26,11 @@
 
 		<Grid RowDefinitions="Auto,Auto,*" Margin="20">
 			<!-- Header with Window Controls -->
-			<Grid Grid.Row="0">
-			<Button x:Name="AccountButton" Margin="0,0,15,0" Height="40" HorizontalAlignment="Right">
+			<Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+
+				<TextBlock x:Name="Username" Grid.Column="0"></TextBlock>
+				<Button x:Name="BackButton" Click="Button_Click" Grid.Column="0" IsVisible="False">Back</Button>
+				<Button x:Name="AccountButton" Margin="0,0,15,0" Height="40" Grid.Column="3">
 				Options
 					<Button.Flyout>
 						<Flyout>
