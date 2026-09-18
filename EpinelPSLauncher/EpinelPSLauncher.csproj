@@ -8,6 +8,7 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
 		<OutputType>WinExe</OutputType>
+        <Version>0.0.0.2</Version>
     </PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />

@@ -16,6 +16,7 @@ public partial class SettingsView : UserControl
     public SettingsView()
     {
         InitializeComponent();
+        SettingsExpanderVersion.Description = "v" + Assembly.GetExecutingAssembly().GetName().Version;
     }
 
     private void ChkCompat_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

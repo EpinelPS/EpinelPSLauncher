@@ -18,7 +18,7 @@
 						<Button x:Name="ButtonResourceChange" Click="ButtonResourceChange_Click">Change</Button>
 					</ui:FASettingsExpander.Footer>
 				</ui:FASettingsExpander>
-				<ui:FASettingsExpander Header="Launcher Version" Description="v0.0.1"
+				<ui:FASettingsExpander Header="Launcher Version"
 				 Name="SettingsExpanderVersion">
 					<ui:FASettingsExpander.Footer>
 						<Button IsEnabled="False" ToolTip.Tip="Coming soon">Check for updates</Button>
